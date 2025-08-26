@@ -110,6 +110,8 @@ def motif_window_gate_hist(entries, motif_regex='G.[ST][AGST]G', window=9, out='
     vals=[]
     for e in entries:
         seq = e.get('sequence','')
+        if not seq:  # Skip entries without sequence
+            continue
         prov = e.get('provenance', [])
         for m in re.finditer(motif_regex, seq):
             s = max(0, m.start()-window//2)
