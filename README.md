@@ -1,7 +1,7 @@
 
-# Protein Design System — Ultimate (Proposal-Aligned)
+# Protein Design System
 
-This repository implements an end-to-end, proposal-aligned system for prompt-conditioned protein design with:
+End-to-end, proposal-aligned system for prompt-conditioned protein design with:
 
 - **Planner + Validator** (ontology keywords, negative regex, refusal logger)
 - **DSL → FSA** motif constraints (min-occurrences, overlapping)
