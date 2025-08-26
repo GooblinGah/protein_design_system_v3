@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install deps (pinned)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-pinned.txt
+      - name: Smoke data
+        run: python scripts/smoke_data.py
+      - name: Unit tests
+        run: pytest -q
+      - name: Train (1 epoch, CPU)
+        run: python train.py --epochs 1 --amp 0 --use_wandb 0
+      - name: Generate (constrained, beam)
+        run: |
+          python generate.py --prompt "alpha beta hydrolase with motif GXSXG, length 260..320, secreted"             --checkpoint checkpoints/model.pt --motif_min_occurrences 1 --z_tier stretched --resample_max 1
+      - name: Verify ledger
+        run: |
+          python safety/verify_ledger.py data_pipeline/data/safety_ledger_generated.jsonl             data_pipeline/data/safety_ledger_generated.jsonl.chain
+      - name: Diagnostics
+        run: python eval/diagnostics.py --ledger data_pipeline/data/safety_ledger_generated.jsonl
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostics-and-ledger
+          path: |
+            *.png
+            data_pipeline/data/safety_ledger_generated.jsonl*

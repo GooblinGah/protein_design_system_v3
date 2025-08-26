@@ -1,0 +1,3 @@
+Design alpha beta hydrolase with motif GXSXG, length 260..320, secreted
+Design serine protease with catalytic triad H57-D102-S195, length 220..280
+Design TIM-barrel enzyme with active site DXH, length 200..300
