@@ -24,7 +24,7 @@ End-to-end, proposal-aligned system for prompt-conditioned protein design with:
 pip install -r requirements.txt
 python scripts/smoke_data.py
 python train.py --epochs 1 --amp 0 --use_wandb 0
-python generate.py --prompt "alpha beta hydrolase with motif GXSXG, length 260..320, secreted" \
+python3 generate.py --prompt "alpha beta hydrolase with motif GXSXG, length 260..320, secreted" \
   --checkpoint checkpoints/model.pt --resample_max 1
 ```
 
